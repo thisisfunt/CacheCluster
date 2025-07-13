@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  router:
+    build: ./router
+    ports:
+      - "8080:8080"
+    depends_on:
+      - storage1
+      - storage2
+    networks:
+      - cache-cluster-network
+    restart: unless-stopped
+
+  storage1:
+    build: ./storage
+    container_name: storage1
+    networks:
+      - cache-cluster-network
+    restart: unless-stopped
+
+  storage2:
+    build: ./storage
+    container_name: storage2
+    networks:
+      - cache-cluster-network
+    restart: unless-stopped
+
+networks:
+  cache-cluster-network:
+    driver: bridge
